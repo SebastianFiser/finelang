@@ -12,8 +12,12 @@ def main(filepath: str):
     rules = validator.take_fine_filepath(filepath)
     cut_source = "\n".join(source.split("\n")[1:])
     tokens = lexer.tokenize(cut_source)
+    print(tokens)
     body = parser.parse(tokens)
+    print(body)
     code = codegen.generate(body[0])
+    print(code)
+
     with open("output.c", "w") as f:
         f.write(code)
 

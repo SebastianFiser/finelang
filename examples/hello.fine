@@ -1,6 +1,9 @@
 SUFFER: two
 ;
 FUNCTION main():
-  let x: whole = 5
+  let x = 5
+  let y: words = "hahaha"
   print("hello world")
+  print(x)
+  print(y)
   return 0

@@ -219,4 +219,4 @@ __marimo__/
 
 # PROJECT CUSTOM
 output
-*.c
+output.c

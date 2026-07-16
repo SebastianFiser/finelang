@@ -6,7 +6,7 @@ def parse(tokens):
     while pos < len(tokens):
         current_token = tokens[pos]
         if current_token[0] == "KEYWORD" and current_token[1] == "let":
-            if tokens[pos + 2][1] == ":" and tokens[pos + 4][0] == "=":
+            if tokens[pos + 2][1] == ":" and tokens[pos + 4][1] == "=":
                 body.append({
                     "type": "let",
                     "name": tokens[pos + 1][1],
@@ -34,6 +34,8 @@ def parse(tokens):
                         pos += 4
                     else:
                         raise errors.InvalidLetValueTypeError(f"Invalid let value, Value type provided : {tokens[pos + 3][0]} \n")
+                else:
+                    raise errors.InvalidIdentifierError(f"Invalid symbol, provided symbol is : {tokens[pos + 2][1]} \n")
             else:
                 raise errors.InvalidIdentifierError(f"Invalid symbol, provided symbol is : {tokens[pos + 2][1]} \n")
             continue
@@ -42,10 +44,22 @@ def parse(tokens):
                 if tokens[pos + 2][0] == "STRING":
                     body.append({
                         "type": "print",
-                        "value": tokens[pos + 2][1]
+                        "value": tokens[pos + 2][1],
+                        "value_type": tokens[pos + 2][0]
                     })
                     pos += 4
-                    continue
+                elif tokens[pos + 2][0] == "IDENTIFIER":
+                    body.append({
+                        "type": "print",
+                        "value": tokens[pos + 2][1],
+                        "value_type": tokens[pos + 2][0]
+                    })
+                    pos += 4
+                else:
+                    raise errors.InvalidValueError(f"Invalid print value, Value type provided : {tokens[pos + 2][0]} \n")
+            else:
+                raise errors.InvalidPrintSyntaxError(f"Invalid print syntax, provided symbols are : {tokens[pos + 1][1]} and {tokens[pos + 3][1]} \n")
+            continue
         elif current_token[0] == "KEYWORD" and current_token[1] == "return":
             if tokens[pos + 1][0] == "NUMBER":
                 body.append({
