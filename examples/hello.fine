@@ -1,6 +1,6 @@
 SUFFER: two
 ;
 FUNCTION main():
-  let x = 5
+  let x: whole = 5
   print("hello world")
   return 0
