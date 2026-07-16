@@ -1,0 +1,2 @@
+class UnterminatedStringError(Exception):
+    pass
