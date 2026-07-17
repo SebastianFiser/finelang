@@ -13,3 +13,12 @@ def word_to_number(word: str) -> int:
         "ten": 10
     }
     return word_to_num_map.get(word.lower(), -1) # todo: error handling
+
+def word_to_operator(word: str) -> str:
+    word_to_operator_map = {
+        "add": "+",
+        "subtract": "-",
+        "times": "*",
+        "divide": "/"
+    }
+    return word_to_operator_map.get(word.lower(), None) 

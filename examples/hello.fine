@@ -1,9 +1,8 @@
 SUFFER: two
 ;
 FUNCTION main():
-  let x = 5
-  let y: words = "hahaha"
-  print("hello world")
+  let x = 5.5 times 2
+  let y = x divide 6
   print(x)
   print(y)
   return 0

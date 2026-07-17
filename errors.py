@@ -15,3 +15,6 @@ class InvalidPrintSyntaxError(Exception):
 
 class UndefinedVariableError(Exception):
     pass
+
+class InvalidOperatorError(Exception):
+    pass
