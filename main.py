@@ -11,7 +11,7 @@ def main(filepath: str, flag: str):
 
     rules = validator.take_fine_filepath(filepath)
     cut_source = "\n".join(source.split("\n")[1:])
-    tokens = lexer.tokenize(cut_source)
+    tokens = lexer.tokenize(cut_source, rules)
 
     body = parser.parse(tokens)
 

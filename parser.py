@@ -1,9 +1,12 @@
 import errors
 
 def parse(tokens):
+    body, _ = parse_statements(tokens, 0)
+    return body
+
+def parse_statements(tokens, pos):
     body = []
-    pos = 0
-    while pos < len(tokens):
+    while pos < len(tokens) and tokens[pos][0] != "DEDENT":
         current_token = tokens[pos]
         if current_token[0] == "NEWLINE":
             pos += 1
@@ -91,16 +94,33 @@ def parse(tokens):
                 continue
         elif current_token[0] == "KEYWORD" and current_token[1] == "FUNCTION":
             if tokens[pos + 1][0] == "IDENTIFIER" and tokens[pos + 2][0] == "SYMBOL" and tokens[pos + 2][1] == "(" and tokens[pos + 3][0] == "SYMBOL" and tokens[pos + 3][1] == ")" and tokens[pos + 4][0] == "SYMBOL" and tokens[pos + 4][1] == ":":
+                nested_body, new_pos = parse_statements(tokens, pos + 5)
                 body.append({
                     "type": "function",
                     "name": tokens[pos + 1][1],
-                    "body": parse(tokens[pos + 5:])
+                    "body": nested_body
                 })
-                pos += 5
-                break
+                pos = new_pos
+                continue
+        elif current_token[0] == "KEYWORD" and current_token[1] == "if":
+            colon_pos = pos + find_end_of_statement(tokens, pos + 1) -2
+            condition_tokens = tokens[pos + 1 : colon_pos]
+            if tokens[colon_pos + 1][0] != "INDENT":
+                raise errors.InvalidIndentationError("if Statement without indentated block")
+
+            nested_body, new_pos = parse_statements(tokens, colon_pos + 2)
+
+            body.append({
+                "type": "if",
+                "condition": condition_tokens,
+                "body": nested_body
+            })
+            pos = new_pos
+            continue
+            
         pos += 1
 
-    return body
+    return (body, pos + 1)
 
 def find_end_of_statement(tokens, start_pos):
     pos = start_pos
@@ -109,3 +129,23 @@ def find_end_of_statement(tokens, start_pos):
             return pos
         pos += 1
     return len(tokens)
+
+def parse_block(tokens, start_pos):
+    body = []
+    pos = start_pos + 1
+    depth = 1
+
+    while depth > 0:
+        current_token = tokens[pos]
+        if current_token[0] == "INDENT":
+            depth += 1
+            parse_block(tokens, pos)
+        elif current_token[0] == "DEDENT":
+            depth -= 1
+            if depth == 0:
+                return body, pos + 1
+        else:
+            body.append(current_token)
+        pos += 1
+
+          
