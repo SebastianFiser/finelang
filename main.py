@@ -15,7 +15,7 @@ def main(filepath: str, flag: str):
 
     body = parser.parse(tokens)
 
-    code = codegen.generate(body[0])
+    code = codegen.generate(body)
 
     with open("output.c", "w") as f:
         f.write(code)
@@ -32,8 +32,11 @@ def main(filepath: str, flag: str):
             print(run_result.stdout)
     elif (flag == "--debug"):
         print("Compilation skipped. Use --compile flag to compile and run the program.")
+        print("Tokens:\n" )
         print(tokens)
+        print("body:\n")
         print(body)
+        print("code:\n")
         print(code)
 
 if __name__ == "__main__":

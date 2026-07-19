@@ -1,9 +1,10 @@
 import re
-pattern = r'"[^"]*"|[A-Za-z_][A-Za-z0-9_]*|[0-9]+\.[0-9]+|[0-9]+|[():=;]'
+pattern = r'"[^"]*"|[A-Za-z_][A-Za-z0-9_]*|[0-9]+\.[0-9]+|[0-9]+|[():=;><]'
 
 keywords = {"FUNCTION", "let", "print", "return", "if", "otherwise", "loop", "stop", "maybe", "NOTHING", "INTENT", "REALITY", "FORGIVE"}
 symbols = {"(", ")", ":", "=", ";"}
 operators = {"add", "subtract", "times", "divide"}
+comparators = {"==", "!=", ">", "<", ">=", "<="}
 
 def tokenize(source: str, rules: dict) -> list:
     tokens = []
@@ -50,6 +51,8 @@ def tokenize(source: str, rules: dict) -> list:
                 tokens.append(("KEYWORD", piece))
             elif piece in operators:
                 tokens.append(("OPERATOR", piece))
+            elif piece in comparators:
+                tokens.append(("COMPARATOR", piece))
             elif piece.startswith('"') and piece.endswith('"'):
                 tokens.append(("STRING", piece[1:-1]))
             elif "." in piece:

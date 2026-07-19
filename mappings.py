@@ -22,3 +22,14 @@ def word_to_operator(word: str) -> str:
         "divide": "/"
     }
     return word_to_operator_map.get(word.lower(), None) 
+
+def word_to_comparator(word: str) -> str:
+    word_to_comparator_map = {
+        "is": "==",
+        "is_not": "!=",
+        "greater_than": ">",
+        "less_than": "<",
+        "greater_than_or_equal_to": ">=",
+        "less_than_or_equal_to": "<="
+    }
+    return word_to_comparator_map.get(word.lower(), None)

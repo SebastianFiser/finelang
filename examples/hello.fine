@@ -6,4 +6,6 @@ FUNCTION main():
         print(x)
         if x > 4:
             print(x)
-    print(x)
+            let y = 6
+            if (x add y > 10):
+                print("hi")

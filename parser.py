@@ -101,11 +101,13 @@ def parse_statements(tokens, pos):
                     "body": nested_body
                 })
                 pos = new_pos
-                continue
+                continue 
         elif current_token[0] == "KEYWORD" and current_token[1] == "if":
-            colon_pos = pos + find_end_of_statement(tokens, pos + 1) -2
+            colon_pos = find_end_of_statement(tokens, pos + 1) -1
+            if tokens[colon_pos][0] != "SYMBOL" or tokens[colon_pos][1] != ":":
+                raise errors.InvalidIdentifierError(f"Improperly closed if statement after {tokens[colon_pos][1]} ")
             condition_tokens = tokens[pos + 1 : colon_pos]
-            if tokens[colon_pos + 1][0] != "INDENT":
+            if tokens[colon_pos + 2][0] != "INDENT":
                 raise errors.InvalidIndentationError("if Statement without indentated block")
 
             nested_body, new_pos = parse_statements(tokens, colon_pos + 2)

@@ -18,3 +18,9 @@ class UndefinedVariableError(Exception):
 
 class InvalidOperatorError(Exception):
     pass
+
+class InvalidIndentationError(Exception):
+    pass
+
+class UnfoundMainError(Exception):
+    pass

@@ -1,16 +1,4 @@
-from lexer import tokenize
-from parser import parse
-from rules import get_rules_for_level
+import re
+pattern = r'"[^"]*"|[A-Za-z_][A-Za-z0-9_]*|[0-9]+\.[0-9]+|[0-9]+|[():=;><]'
 
-source = """FUNCTION main():
-    let x = 5
-FUNCTION second():
-    let y = 10
-"""
-
-rules = get_rules_for_level(1)
-tokens = tokenize(source, rules)
-ast = parse(tokens)
-
-import json
-print(json.dumps(ast, indent=2))
+print(re.findall(pattern, "if x > 3:"))
